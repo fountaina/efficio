@@ -54,7 +54,15 @@ app.post("/edit", (req, res) => {
   }
 });
 
-app.post("/delete", (req, res) => {});
+app.post("/delete", (req, res) => {
+  try {
+    db.query("DELETE FROM items WHERE id = $1", [req.body.deleteItemId]);
+    res.redirect("/");
+  } catch (error) {
+    cconsole.error("Error deleting title from db: " + error.message);
+    res.status(500);
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
